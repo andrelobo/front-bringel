@@ -1,13 +1,23 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">Categorias</h1>
-    <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
-    <p v-else-if="categorias.length === 0" class="text-gray-500">Nenhuma categoria encontrada.</p>
-    <ul v-else class="list-disc pl-5">
-      <li v-for="categoria in categorias" :key="categoria.id" class="text-gray-800">
-        {{ categoria.nome }}
-      </li>
-    </ul>
+  <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-white mb-6">Lista de Categorias</h2>
+      <div v-if="errorMessage" class="bg-red-600 text-white px-4 py-3 rounded mb-4">
+        {{ errorMessage }}
+      </div>
+      <div v-else class="bg-gray-800 shadow overflow-hidden sm:rounded-md">
+        <ul v-if="categorias.length > 0" class="divide-y divide-gray-700">
+          <li v-for="categoria in categorias" :key="categoria.id" class="px-6 py-4">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-medium text-white">{{ categoria.nome }}</div>
+            </div>
+          </li>
+        </ul>
+        <div v-else class="px-6 py-4 text-gray-400">
+          Nenhuma categoria encontrada.
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -33,7 +43,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style scoped>
-/* Adicione estilos personalizados, se necessário */
-</style>

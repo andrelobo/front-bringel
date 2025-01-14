@@ -35,12 +35,6 @@
             placeholder="Data de Validade" v-model="dataValidade">
         </div>
         <div>
-          <label for="imagem" class="sr-only">Imagem</label>
-          <input id="imagem" name="imagem" type="file" accept="image/*"
-            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            @change="handleFileChange">
-        </div>
-        <div>
           <label for="categoria" class="sr-only">Categoria</label>
           <select id="categoria" name="categoria" required
             class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -74,7 +68,6 @@ const descricao = ref('')
 const preco = ref(0)
 const categoriaId = ref('')
 const dataValidade = ref('')
-const imagem = ref(null)
 const categorias = ref([])
 const errorMessage = ref('')
 const isEditing = ref(false)
@@ -108,32 +101,23 @@ onMounted(async () => {
   }
 })
 
-const handleFileChange = (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    imagem.value = file
-  }
-}
-
 const handleSubmit = async () => {
   errorMessage.value = '' // Limpar mensagem de erro anterior
 
   try {
-    const formData = new FormData()
-    formData.append('nome', nome.value)
-    formData.append('descricao', descricao.value)
-    formData.append('preco', parseFloat(preco.value))
-    formData.append('categoria_id', categoriaId.value)
-    formData.append('data_validade', dataValidade.value)
-    if (imagem.value) {
-      formData.append('imagem', imagem.value)
+    const produtoData = {
+      nome: nome.value,
+      descricao: descricao.value,
+      preco: parseFloat(preco.value),
+      categoria_id: categoriaId.value,
+      data_validade: dataValidade.value,
     }
 
     if (isEditing.value) {
-      const response = await updateProduto(route.params.id, formData)
+      const response = await updateProduto(route.params.id, produtoData)
       if (!response.data.success) throw new Error('Erro ao atualizar o produto.')
     } else {
-      const response = await createProduto(formData)
+      const response = await createProduto(produtoData)
       if (!response.data.success) throw new Error('Erro ao cadastrar o produto.')
     }
 
